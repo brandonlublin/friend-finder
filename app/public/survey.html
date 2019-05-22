@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>FriendFindertest</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"
+        integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+    <script src='https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js'></script>
+</head>
+
+<body>
+    <div class="container">
+        <br><br>
+        <h1 class="display-4" href='/public/home'><span><i class='fa fa-facebook-square' aria-hidden='true'></i></span></i><strong>Friend Finder</strong></h1>
+        <h3>Survey Questions
+            <hr class="my-4">
+        </h3>
+        <h4>About You</h4>
+        <form>
+            <div class="form-group">
+                <label for="nameInput">Name (Required)</label>
+                <input type="data" class="form-control" id="nameInput" aria-describedby="nameHelp"
+                    placeholder="Enter Name Here...">
+            </div>
+            <div class="form-group">
+                <label for="exampleInputImage">Link to Photo Image (Required)</label>
+                <input type="Name" class="form-control" id="imageInput" placeholder="Link Image Here...">
+            </div>
+            <hr class="my-4">
+        </form>
+        <div id='questions'></div>
+        <button class='btn btn-lg btn-primary' id='submitInfo'>Submit</button>
+    </div>
+<script type ='text/javascript'>
+$(document).ready(function() {
+    let person = {
+        name: '',
+        photo: '',
+        scores: []
+    }
+    let personSelections = [];
+    //questions and choices in dropdown 
+    var questionsObj = [
+        {
+            question: 'You prefer the outdoors over being inside.',
+            choices: ['','1 (Strongly Disagree)', '2', '3', '4', '5 (Strongly Agree'],
+        },
+        {
+            question: '',
+            choices: ['','1 (Strongly Disagree)', '2', '3', '4', '5 (Strongly Agree'],
+        },
+        {
+            question: '',
+            choices: ['','1 (Strongly Disagree)', '2', '3', '4', '5 (Strongly Agree'],
+        }, 
+        {
+            question: '',
+            choices: ['','1 (Strongly Disagree)', '2', '3', '4', '5 (Strongly Agree'],
+        },
+        {
+            question: '',
+            choices: ['','1 (Strongly Disagree)', '2', '3', '4', '5 (Strongly Agree'],
+        }, 
+        {
+            question: '',
+            choices: ['','1 (Strongly Disagree)', '2', '3', '4', '5 (Strongly Agree'],
+        }, 
+        {
+            question: '',
+            choices: ['','1 (Strongly Disagree)', '2', '3', '4', '5 (Strongly Agree'],
+        }, 
+        {
+            question: '',
+            choices: ['','1 (Strongly Disagree)', '2', '3', '4', '5 (Strongly Agree'],
+        },
+        {
+            question: 'Here is some text',
+            choices: ['','1 (Strongly Disagree)', '2', '3', '4', '5 (Strongly Agree'],
+        },
+        {
+            question: 'Here is some text',
+            choices: ['', '1 (Strongly Disagree)', '2', '3', '4', '5 (Strongly Agree'],
+        }];
+
+        //populate questions and choices into HTML
+    var mySelect = $('#questions');
+
+    function createQuestions() {
+        for (let i = 0; i < questionsObj.length; i++) {
+            var question = $('<h4>').addClass('q-text').text('Question #' + [i + 1]);
+            let wrap = $('<select>').addClass('questions q-wrap').attr('id', 'question-'+[i+1]);
+            let questionHeader = $('<h6>').addClass('.question#'+ [i +1]).text(questionsObj[i].question)
+            for (let j = 0; j < questionsObj[i].choices.length; j++) {
+                let choices = questionsObj[i].choices;
+                let options = '<option data-index=' +[j]+' value=' + choices[j] + '>' + choices[j];
+                $(wrap).append(options);
+            }
+            $(question).append(questionHeader, wrap);
+            
+            displayQuestionsHtml(question);
+        }
+        
+    }
+    $('#questions').on('change', function(event){
+        var selected = new Array();
+        $('#questions option:selected').each(function() {
+            selected.push($(this).val());
+            // console.log(selected);
+            person.scores = selected;
+            
+        });
+    });
+
+    $('#submitInfo').on('click', function () {
+        let name = $('#nameInput').val();
+        let imageLink = $('#imageInput').val()
+        let userAnswer = String($('select').val());
+        person.name = name;
+        person.photo = imageLink;
+        // person.scores.push(userAnswer);
+        console.log(person);
+    });
+
+    function displayQuestionsHtml(question){
+        $('#questions').append(question)
+    }
+    createQuestions();
+
+    $.post("/api/friends", person, function (data) {
+        // $("#match-name").text(data.name);
+        // $("#match-img").attr("src", data.photo);
+        console.log(data);
+        console.log(person);
+        
+    });
+        
+});
+
+</script>
+</body>
+
+</html>
