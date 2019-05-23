@@ -1,7 +1,17 @@
-const express = require('express');
-const apiRoutes = require('./apiRoutes');
+const express = require("express");
+const router = express.Router();
+
+const htmlRoutes = require('./routing/htmlRoutes');
+const apiRoute = require("./routing/apiRoute");
 
 const app = express();
 
-app.use('/api', apiRoutes);
-app.use(express.static('resources'));
+const PORT = process.env.PORT || 8080;
+
+app.use("/", htmlRoutes);
+app.use("/api", apiRoute);
+
+
+app.listen(PORT, function(){
+    console.log("App listening on PORT: " + PORT)
+})

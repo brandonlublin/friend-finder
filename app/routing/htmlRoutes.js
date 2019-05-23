@@ -1,14 +1,16 @@
-var path = require('path');
-var app = express();
-function htmlRoutes(app) {
-    
+const express = require("express");
+const router = express.Router()
+const path = require("path");
 
-app.get("/", function(req, res) {
-    res.sendFile(path.join(__dirname, "/../public/home.html"));
-});
 
-app.get("/survey", function(req, res) {
-    res.sendFile(path.join(__dirname, "/../public/survey.html"));
-});
-}
-module.exports = htmlRoutes;
+//Route to Home
+router.get('/', function (req, res) {
+    res.sendFile("home.html", {root: path.join(__dirname, "../public")})
+
+})
+// define the about route
+router.get('/survey', function (req, res) {
+    res.sendFile("survey.html", {root: path.join(__dirname, "../public")})
+})
+
+module.exports = router;

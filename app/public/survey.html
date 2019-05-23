@@ -51,39 +51,39 @@ $(document).ready(function() {
             choices: ['','1 (Strongly Disagree)', '2', '3', '4', '5 (Strongly Agree'],
         },
         {
-            question: '',
+            question: 'You read often.',
             choices: ['','1 (Strongly Disagree)', '2', '3', '4', '5 (Strongly Agree'],
         },
         {
-            question: '',
+            question: 'You love sports.',
             choices: ['','1 (Strongly Disagree)', '2', '3', '4', '5 (Strongly Agree'],
         }, 
         {
-            question: '',
+            question: 'You prefer having a deep conversation with friends rather than small talk and gossip.',
             choices: ['','1 (Strongly Disagree)', '2', '3', '4', '5 (Strongly Agree'],
         },
         {
-            question: '',
+            question: 'Your ideal night includes popcorn and Netflix.',
             choices: ['','1 (Strongly Disagree)', '2', '3', '4', '5 (Strongly Agree'],
         }, 
         {
-            question: '',
+            question: 'People often refer to you as a social butterfly.',
             choices: ['','1 (Strongly Disagree)', '2', '3', '4', '5 (Strongly Agree'],
         }, 
         {
-            question: '',
+            question: 'You are a picky eater.',
             choices: ['','1 (Strongly Disagree)', '2', '3', '4', '5 (Strongly Agree'],
         }, 
         {
-            question: '',
+            question: 'You believe that you should have a work-life balance',
             choices: ['','1 (Strongly Disagree)', '2', '3', '4', '5 (Strongly Agree'],
         },
         {
-            question: 'Here is some text',
+            question: 'Friends usually see you as someone they can confide in.',
             choices: ['','1 (Strongly Disagree)', '2', '3', '4', '5 (Strongly Agree'],
         },
         {
-            question: 'Here is some text',
+            question: 'You enjoy going to concerts.',
             choices: ['', '1 (Strongly Disagree)', '2', '3', '4', '5 (Strongly Agree'],
         }];
 
@@ -92,9 +92,9 @@ $(document).ready(function() {
 
     function createQuestions() {
         for (let i = 0; i < questionsObj.length; i++) {
-            var question = $('<h4>').addClass('q-text').text('Question #' + [i + 1]);
+            var question = $('<h6>').addClass('q-text').text('Question #' + [i + 1]);
             let wrap = $('<select>').addClass('questions q-wrap').attr('id', 'question-'+[i+1]);
-            let questionHeader = $('<h6>').addClass('.question#'+ [i +1]).text(questionsObj[i].question)
+            let questionHeader = $('<h4>').addClass('.question#'+ [i +1]).text(questionsObj[i].question)
             for (let j = 0; j < questionsObj[i].choices.length; j++) {
                 let choices = questionsObj[i].choices;
                 let options = '<option data-index=' +[j]+' value=' + choices[j] + '>' + choices[j];
