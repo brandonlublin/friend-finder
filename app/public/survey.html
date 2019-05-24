@@ -11,6 +11,11 @@
     <script src='https://code.jquery.com/jquery-3.4.1.min.js'
         integrity='sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=' crossorigin='anonymous'></script>
     <script src='https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js'></script>
+    <style>
+        .hide {
+            display: none;
+        }
+    </style>
 </head>
 
 <body>
@@ -22,33 +27,34 @@
             <hr class='my-4'>
         </h3>
         <h4>About You</h4>
-        <form>
+        <form id='surveyForm'>
             <div class='form-group'>
                 <label for='nameInput'>Name (Required)</label>
                 <input type='data' class='form-control' id='nameInput' aria-describedby='nameHelp'
-                    placeholder='Enter Name Here...'>
+                    placeholder='Enter Name Here...' required>
             </div>
             <div class='form-group'>
                 <label for='exampleInputImage'>Link to Photo Image (Required)</label>
-                <input type='Name' class='form-control' id='imageInput' placeholder='Link Image Here...'>
+                <input type='Name' class='form-control' id='imageInput' placeholder='Link Image Here...' required>
             </div>
             <hr class='my-4'>
+            <div id='questions'></div>
+            <button class='btn btn-lg btn-primary' id='submitInfo'>Submit</button>
         </form>
-        <div id='questions'></div>
-        <button class='btn btn-lg btn-primary' id='submitInfo'>Submit</button>
+        
 
         <div class='modal' tabindex='-1' role='dialog' id='modalMain'>
             <div class='modal-dialog' role='document'>
                 <div class='modal-content'>
                     <div class='modal-header'>
-                        <h5 class='modal-title'>You Matched With:</h5>
+                        <h5 class='modal-title'></h5>
                         <button type='button' class='close' data-dismiss='modal' aria-label='Close'>
                             <span aria-hidden='true'>&times;</span>
                         </button>
                     </div>
                     <div class='modal-body'>
                         <div id='matchName'></div>
-                        <div id='matchImg'></div>
+                        <img id='matchImage' alt='match'>
                     </div>
                     <div class='modal-footer'>
                         <button type='button' class='btn btn-secondary' data-dismiss='modal' href='/'>Exit</button>
@@ -59,11 +65,6 @@
     </div>
     <script type='text/javascript'>
         $(document).ready(function () {
-            const person = {
-                name: '',
-                photo: '',
-                scores: []
-            }
             let personSelections = [];
             //questions and choices in dropdown 
             var questionsObj = [
@@ -114,7 +115,7 @@
             function createQuestions() {
                 for (let i = 0; i < questionsObj.length; i++) {
                     var question = $('<h6>').addClass('q-text').text('Question #' + [i + 1]);
-                    let wrap = $('<select>').addClass('questions q-wrap').attr('id', 'question-' + [i + 1]);
+                    let wrap = $('<select>').addClass('questions q-wrap').attr('id', 'question-' + [i + 1]).attr('required', true);
                     let questionHeader = $('<h4>').addClass('.question#' + [i + 1]).text(questionsObj[i].question)
                     for (let j = 0; j < questionsObj[i].choices.length; j++) {
                         let choices = questionsObj[i].choices;
@@ -127,31 +128,39 @@
                 }
 
             }
-            $('#questions').on('change', function (event) {
-                var selected = new Array();
-                $('#questions option:selected').each(function () {
-                    selected.push($(this).val());
-                    // console.log(selected);
-                    person.scores = selected;
 
-                });
-            });
+            $('#submitInfo').on('click', function (e) {
+                e.preventDefault();
+                $('.modal-title, #matchName, #matchImage').empty();
+                $('#matchImage').removeClass('hide')
+                let formIsValid = $('#surveyForm')[0].checkValidity();
+                if (formIsValid) {
+                    const person = {
+                        name: $('#nameInput').val().trim(),
+                        photo: $('#imageInput').val().trim(),
+                        scores: []
+                    }
+                    // person.scores.push(userAnswer);
+                    $('select.questions').each(function(i, elm) {
+                        person.scores.push(elm.value)
+                        elm.value = '';
+                    })
 
-            $('#submitInfo').on('click', function () {
-                let name = $('#nameInput').val();
-                let imageLink = $('#imageInput').val()
-                let userAnswer = String($('select').val());
-                person.name = name;
-                person.photo = imageLink;
-                // person.scores.push(userAnswer);
-                console.log(person);
-                $('#modalMain').modal('toggle');
-                var currentURL = window.location.origin;
-                $.post(currentURL + '/api/friends', person, function (person) {
-                $('#matchName').text(person.name);
-                $('#matchImg').attr('src', person.photo)
+                    $('#nameInput, #imageInput').val('');
+                
+                    $.post('/api/friends', person, function (response) {
 
-            });
+                        $('.modal-title').text('You\'re Matched With:')
+                        $('#matchName').text(response.name);
+                        $('#matchImage').attr('src', response.photo)
+                        $('#modalMain').modal('toggle');
+                    });
+                } else {
+                    $('#matchImage').addClass('hide');
+                    $('.modal-title').text('Oh No!')
+                    $('#matchName').text('Please Ensure You Fill Out The Entire Form.');
+                    $('#modalMain').modal('toggle');
+                }
             });
 
             function displayQuestionsHtml(question) {
