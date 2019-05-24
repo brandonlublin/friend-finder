@@ -146,19 +146,18 @@
                 // person.scores.push(userAnswer);
                 console.log(person);
                 $('#modalMain').modal('toggle');
+                var currentURL = window.location.origin;
+                $.post(currentURL + '/api/friends', person, function (person) {
+                $('#matchName').text(person.name);
+                $('#matchImg').attr('src', person.photo)
+
+            });
             });
 
             function displayQuestionsHtml(question) {
                 $('#questions').append(question)
             }
             createQuestions();
-
-            var currentURL = window.location.origin;
-            $.post(currentURL + '/api/friends', person, function (person) {
-                $('#matchName').text(person.name);
-                $('#matchImg').attr('src', person.photo)
-
-            });
 
         });
 

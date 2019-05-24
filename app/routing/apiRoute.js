@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router()
 const app = express();
+const friends = require('../data/friends')
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
@@ -12,8 +13,8 @@ router.get('/', function (req, res) {
 router.get('/survey', function (req, res) {
     res.sendFile('survey.html', {root: path.join(__dirname, '../public')})
 })
-router.get('/api/friends', function(req, res) {
-    res.sendFile('friends.js', {root: path.join(__dirname, '../data')})
+router.get('/friends', function(req, res) {
+    return res.json(friends)
 })
 
 module.exports = router;
