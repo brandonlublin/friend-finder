@@ -1,56 +1,57 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang='en'>
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta charset='UTF-8'>
+    <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+    <meta http-equiv='X-UA-Compatible' content='ie=edge'>
     <title>FriendFindertest</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-    <script src="https://code.jquery.com/jquery-3.4.1.min.js"
-        integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+    <link rel='stylesheet' href='https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css' />
+    <link rel='stylesheet' href='https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css'>
+    <script src='https://code.jquery.com/jquery-3.4.1.min.js'
+        integrity='sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=' crossorigin='anonymous'></script>
     <script src='https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js'></script>
 </head>
 
 <body>
-    <div class="container">
+    <div class='container'>
         <br><br>
-        <h1 class="display-4" href='./home.html'><span><i class='fa fa-facebook-square'
+        <h1 class='display-4' href='./home.html'><span><i class='fa fa-facebook-square'
                     aria-hidden='true'></i></span></i><strong>Friend Finder</strong></h1>
         <h3>Survey Questions
-            <hr class="my-4">
+            <hr class='my-4'>
         </h3>
         <h4>About You</h4>
         <form>
-            <div class="form-group">
-                <label for="nameInput">Name (Required)</label>
-                <input type="data" class="form-control" id="nameInput" aria-describedby="nameHelp"
-                    placeholder="Enter Name Here...">
+            <div class='form-group'>
+                <label for='nameInput'>Name (Required)</label>
+                <input type='data' class='form-control' id='nameInput' aria-describedby='nameHelp'
+                    placeholder='Enter Name Here...'>
             </div>
-            <div class="form-group">
-                <label for="exampleInputImage">Link to Photo Image (Required)</label>
-                <input type="Name" class="form-control" id="imageInput" placeholder="Link Image Here...">
+            <div class='form-group'>
+                <label for='exampleInputImage'>Link to Photo Image (Required)</label>
+                <input type='Name' class='form-control' id='imageInput' placeholder='Link Image Here...'>
             </div>
-            <hr class="my-4">
+            <hr class='my-4'>
         </form>
         <div id='questions'></div>
         <button class='btn btn-lg btn-primary' id='submitInfo'>Submit</button>
 
-        <div class="modal" tabindex="-1" role="dialog" id='modalMain'>
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">You Matched With:</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
+        <div class='modal' tabindex='-1' role='dialog' id='modalMain'>
+            <div class='modal-dialog' role='document'>
+                <div class='modal-content'>
+                    <div class='modal-header'>
+                        <h5 class='modal-title'>You Matched With:</h5>
+                        <button type='button' class='close' data-dismiss='modal' aria-label='Close'>
+                            <span aria-hidden='true'>&times;</span>
                         </button>
                     </div>
-                    <div class="modal-body">
-                        <p>//</p>
+                    <div class='modal-body'>
+                        <div id='matchName'></div>
+                        <div id='matchImg'></div>
                     </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal" href='/'>Exit</button>
+                    <div class='modal-footer'>
+                        <button type='button' class='btn btn-secondary' data-dismiss='modal' href='/'>Exit</button>
                     </div>
                 </div>
             </div>
@@ -58,7 +59,7 @@
     </div>
     <script type='text/javascript'>
         $(document).ready(function () {
-            let person = {
+            const person = {
                 name: '',
                 photo: '',
                 scores: []
@@ -152,10 +153,10 @@
             }
             createQuestions();
 
-            $.post("/api/friends", person, function (data) {
-
-                console.log(data);
-                console.log(person);
+            var currentURL = window.location.origin;
+            $.post(currentURL + '/api/friends', person, function (person) {
+                $('#matchName').text(person.name);
+                $('#matchImg').attr('src', person.photo)
 
             });
 
