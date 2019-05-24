@@ -16,7 +16,8 @@
 <body>
     <div class="container">
         <br><br>
-        <h1 class="display-4" href='/public/home'><span><i class='fa fa-facebook-square' aria-hidden='true'></i></span></i><strong>Friend Finder</strong></h1>
+        <h1 class="display-4" href='./home.html'><span><i class='fa fa-facebook-square'
+                    aria-hidden='true'></i></span></i><strong>Friend Finder</strong></h1>
         <h3>Survey Questions
             <hr class="my-4">
         </h3>
@@ -35,113 +36,132 @@
         </form>
         <div id='questions'></div>
         <button class='btn btn-lg btn-primary' id='submitInfo'>Submit</button>
+
+        <div class="modal" tabindex="-1" role="dialog" id='modalMain'>
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">You Matched With:</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p>//</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal" href='/'>Exit</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-<script type ='text/javascript'>
-$(document).ready(function() {
-    let person = {
-        name: '',
-        photo: '',
-        scores: []
-    }
-    let personSelections = [];
-    //questions and choices in dropdown 
-    var questionsObj = [
-        {
-            question: 'You prefer the outdoors over being inside.',
-            choices: ['','1 (Strongly Disagree)', '2', '3', '4', '5 (Strongly Agree'],
-        },
-        {
-            question: 'You read often.',
-            choices: ['','1 (Strongly Disagree)', '2', '3', '4', '5 (Strongly Agree'],
-        },
-        {
-            question: 'You love sports.',
-            choices: ['','1 (Strongly Disagree)', '2', '3', '4', '5 (Strongly Agree'],
-        }, 
-        {
-            question: 'You prefer having a deep conversation with friends rather than small talk and gossip.',
-            choices: ['','1 (Strongly Disagree)', '2', '3', '4', '5 (Strongly Agree'],
-        },
-        {
-            question: 'Your ideal night includes popcorn and Netflix.',
-            choices: ['','1 (Strongly Disagree)', '2', '3', '4', '5 (Strongly Agree'],
-        }, 
-        {
-            question: 'People often refer to you as a social butterfly.',
-            choices: ['','1 (Strongly Disagree)', '2', '3', '4', '5 (Strongly Agree'],
-        }, 
-        {
-            question: 'You are a picky eater.',
-            choices: ['','1 (Strongly Disagree)', '2', '3', '4', '5 (Strongly Agree'],
-        }, 
-        {
-            question: 'You believe that you should have a work-life balance',
-            choices: ['','1 (Strongly Disagree)', '2', '3', '4', '5 (Strongly Agree'],
-        },
-        {
-            question: 'Friends usually see you as someone they can confide in.',
-            choices: ['','1 (Strongly Disagree)', '2', '3', '4', '5 (Strongly Agree'],
-        },
-        {
-            question: 'You enjoy going to concerts.',
-            choices: ['', '1 (Strongly Disagree)', '2', '3', '4', '5 (Strongly Agree'],
-        }];
-
-        //populate questions and choices into HTML
-    var mySelect = $('#questions');
-
-    function createQuestions() {
-        for (let i = 0; i < questionsObj.length; i++) {
-            var question = $('<h6>').addClass('q-text').text('Question #' + [i + 1]);
-            let wrap = $('<select>').addClass('questions q-wrap').attr('id', 'question-'+[i+1]);
-            let questionHeader = $('<h4>').addClass('.question#'+ [i +1]).text(questionsObj[i].question)
-            for (let j = 0; j < questionsObj[i].choices.length; j++) {
-                let choices = questionsObj[i].choices;
-                let options = '<option data-index=' +[j]+' value=' + choices[j] + '>' + choices[j];
-                $(wrap).append(options);
+    <script type='text/javascript'>
+        $(document).ready(function () {
+            let person = {
+                name: '',
+                photo: '',
+                scores: []
             }
-            $(question).append(questionHeader, wrap);
-            
-            displayQuestionsHtml(question);
-        }
-        
-    }
-    $('#questions').on('change', function(event){
-        var selected = new Array();
-        $('#questions option:selected').each(function() {
-            selected.push($(this).val());
-            // console.log(selected);
-            person.scores = selected;
-            
+            let personSelections = [];
+            //questions and choices in dropdown 
+            var questionsObj = [
+                {
+                    question: 'You prefer the outdoors over being inside.',
+                    choices: ['', '1 (Strongly Disagree)', '2', '3', '4', '5 (Strongly Agree'],
+                },
+                {
+                    question: 'You read often.',
+                    choices: ['', '1 (Strongly Disagree)', '2', '3', '4', '5 (Strongly Agree'],
+                },
+                {
+                    question: 'You love sports.',
+                    choices: ['', '1 (Strongly Disagree)', '2', '3', '4', '5 (Strongly Agree'],
+                },
+                {
+                    question: 'You prefer having a deep conversation with friends rather than small talk and gossip.',
+                    choices: ['', '1 (Strongly Disagree)', '2', '3', '4', '5 (Strongly Agree'],
+                },
+                {
+                    question: 'Your ideal night includes popcorn and Netflix.',
+                    choices: ['', '1 (Strongly Disagree)', '2', '3', '4', '5 (Strongly Agree'],
+                },
+                {
+                    question: 'People often refer to you as a social butterfly.',
+                    choices: ['', '1 (Strongly Disagree)', '2', '3', '4', '5 (Strongly Agree'],
+                },
+                {
+                    question: 'You are a picky eater.',
+                    choices: ['', '1 (Strongly Disagree)', '2', '3', '4', '5 (Strongly Agree'],
+                },
+                {
+                    question: 'You believe that you should have a work-life balance',
+                    choices: ['', '1 (Strongly Disagree)', '2', '3', '4', '5 (Strongly Agree'],
+                },
+                {
+                    question: 'Friends usually see you as someone they can confide in.',
+                    choices: ['', '1 (Strongly Disagree)', '2', '3', '4', '5 (Strongly Agree'],
+                },
+                {
+                    question: 'You enjoy going to concerts.',
+                    choices: ['', '1 (Strongly Disagree)', '2', '3', '4', '5 (Strongly Agree'],
+                }];
+
+            //populate questions and choices into HTML
+            var mySelect = $('#questions');
+
+            function createQuestions() {
+                for (let i = 0; i < questionsObj.length; i++) {
+                    var question = $('<h6>').addClass('q-text').text('Question #' + [i + 1]);
+                    let wrap = $('<select>').addClass('questions q-wrap').attr('id', 'question-' + [i + 1]);
+                    let questionHeader = $('<h4>').addClass('.question#' + [i + 1]).text(questionsObj[i].question)
+                    for (let j = 0; j < questionsObj[i].choices.length; j++) {
+                        let choices = questionsObj[i].choices;
+                        let options = '<option data-index=' + [j] + ' value=' + choices[j] + '>' + choices[j];
+                        $(wrap).append(options);
+                    }
+                    $(question).append(questionHeader, wrap);
+
+                    displayQuestionsHtml(question);
+                }
+
+            }
+            $('#questions').on('change', function (event) {
+                var selected = new Array();
+                $('#questions option:selected').each(function () {
+                    selected.push($(this).val());
+                    // console.log(selected);
+                    person.scores = selected;
+
+                });
+            });
+
+            $('#submitInfo').on('click', function () {
+                let name = $('#nameInput').val();
+                let imageLink = $('#imageInput').val()
+                let userAnswer = String($('select').val());
+                person.name = name;
+                person.photo = imageLink;
+                // person.scores.push(userAnswer);
+                console.log(person);
+                $('#modalMain').modal('toggle');
+            });
+
+            function displayQuestionsHtml(question) {
+                $('#questions').append(question)
+            }
+            createQuestions();
+
+            $.post("/api/friends", person, function (data) {
+
+                console.log(data);
+                console.log(person);
+
+            });
+
         });
-    });
 
-    $('#submitInfo').on('click', function () {
-        let name = $('#nameInput').val();
-        let imageLink = $('#imageInput').val()
-        let userAnswer = String($('select').val());
-        person.name = name;
-        person.photo = imageLink;
-        // person.scores.push(userAnswer);
-        console.log(person);
-    });
-
-    function displayQuestionsHtml(question){
-        $('#questions').append(question)
-    }
-    createQuestions();
-
-    $.post("/api/friends", person, function (data) {
-        // $("#match-name").text(data.name);
-        // $("#match-img").attr("src", data.photo);
-        console.log(data);
-        console.log(person);
-        
-    });
-        
-});
-
-</script>
+    </script>
 </body>
 
 </html>
